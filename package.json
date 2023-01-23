@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "aws-sdk": "^2.1299.0",
+    "google-auth-library": "^8.7.0",
+    "googleapis": "^110.0.0"
+  }
+}

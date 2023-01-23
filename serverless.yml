@@ -1,0 +1,31 @@
+service: serverless-node-s3
+
+frameworkVersion: '3'
+
+plugins:
+  serverless-plugin-existing-s3
+
+custom:
+  bucket: my-node-s3
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:GetObjectAcl
+          Resource: "arn:aws:s3:::${self:custom.bucket}/*"
+
+functions:
+  logbucket:
+      handler: functions/log-bucket.log
+      environment:
+        CREDENTIALS: ${ssm:/CREDENTIALS}
+        IAM_USER_KEY: ${ssm:/IAM_USER_KEY}
+        IAM_USER_SECRET: ${ssm:/IAM_USER_SECRET}
+        FOLDER_ID: ${ssm:/FOLDER_ID}

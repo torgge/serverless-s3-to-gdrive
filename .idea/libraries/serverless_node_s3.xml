@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="serverless-node-s3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.serverless/serverless-node-s3.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
