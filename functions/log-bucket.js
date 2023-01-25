@@ -11,6 +11,7 @@ const s3 = new AWS.S3({
     secretAccessKey: IAM_USER_SECRET,
     Bucket: BUCKET_NAME
 });
+const {Duplex} = require('stream');
 
 // # This function for read/download file from s3 bucket
 const s3download = async function (params) {
@@ -26,6 +27,13 @@ const s3download = async function (params) {
             err.message || JSON.stringify(err.message)
         )
     }
+}
+
+function bufferToStream(myBuffer) {
+    let tmp = new Duplex();
+    tmp.push(myBuffer);
+    tmp.push(null);
+    return tmp;
 }
 
 /**
@@ -51,12 +59,13 @@ async function uploadBasic(fileName, data) {
     const service = google.drive({version: 'v3', auth:client});
     const fileMetadata = {
         name: fileName.substring(fileName.indexOf('/') + 1),
+        mimeType: data.ContentType,
         parents: [FOLDER_ID],
     };
     console.log(`fileMetadata: ${JSON.stringify(fileMetadata)}`)
     const media = {
         mimeType: data.ContentType,
-        body: data.Body.toString('utf-8')
+        body: bufferToStream(data.Body)
     };
     console.log(`fileMetadata: ${JSON.stringify(media)}`)
     try {
